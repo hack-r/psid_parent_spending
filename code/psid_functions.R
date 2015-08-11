@@ -9,7 +9,7 @@ setwd("data")
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(AER, bestglm, caret, devtools, faraway, ggplot2, 
                gridExtra, Matching, nnet, plyr, pls, psidR, rattle,
-               RDSTK, reshape, ROCR, RODBC, RRF, sqldf)
+               RDSTK, reshape, ROCR, RODBC, RRF, sqldf, xlsx)
 
 
 # HPC ---------------------------------------------------------------------
@@ -60,4 +60,7 @@ sat<-function(x,y,ll=0,imp=y){
   x[x>y]<-y
   x[x<ll]<-ll
   return(x)
+}
+trim <- function( x ) {
+  gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
 }
