@@ -61,6 +61,13 @@ sat<-function(x,y,ll=0,imp=y){
   x[x<ll]<-ll
   return(x)
 }
-trim <- function( x ) {
+trim <- function(x) {
   gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
+}
+equivScale <- function(adults, children){
+  ## Family-shared Spending Equivalence Scale for 1 Person 
+  ## Recommended by Citro and Michael (1995)
+  # adult = # adults, children = # children
+  es <- (adults + (children * .7))^.7
+  return(es)
 }
