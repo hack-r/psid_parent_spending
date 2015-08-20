@@ -12,7 +12,7 @@
 source("code\\psid_functions.R")
 
 # Data --------------------------------------------------------------------
-source("..code\\psid_data.R")
+source("..\\code\\psid_data.R")
 
 # Analysis ----------------------------------------------------------------
-source("..code\\psid_analysis.R")
+source("..\\code\\psid_analysis.R")
