@@ -1,7 +1,6 @@
 ## File       : psid_data.R ####
 ## Description: ETL of Data 
 
-
 # Variable List -----------------------------------------------------------
 # CH02PRWT: CHILD LEVEL WEIGHT 02
 # CH07PRWT: PRIMARY CAREGIVER / CHILD WEIGHT 07
@@ -68,7 +67,7 @@
 # ER31997: SAMPLING ERROR CLUSTER
 # ER32021: YEAR BIRTH INFO MOST RECENTLY UPDATED
 # ER32022: # LIVE BIRTHS TO THIS INDIVIDUAL
-#   ER32024: YEAR 1ST/ONLY CHILD BORN
+# ER32024: YEAR 1ST/ONLY CHILD BORN
 # ER32026: YEAR YOUNGEST CHILD BORN
 # ER32028: YEAR 2ND YOUNGEST CHILD BORN
 # ER32030: YEAR 3RD YOUNGEST CHILD BORN
@@ -242,8 +241,7 @@
 # S820: IMP VALUE HOME EQUITY 07
 # SUBSELWT: WITHIN HOUSEHOLD SELECTION FACTOR 
 
-
-# Data --------------------------------------------------------------------
+# Load Raw Data -----------------------------------------------------------
 # Read in custom PSID Excel Spreadsheet
 psid.data     <- read.csv("J195615.csv") #CSV saved from Excel version for speed
 
@@ -263,4 +261,65 @@ cdsMap.labels <- read.csv("M195615_labels.csv", header = F)
 colnames(cdsMap.labels) <- c("varname", "desc")
 cdsMap.labels[, 1]      <- trim(cdsMap.labels[, 1])
 cdsMap.labels[, 2]      <- trim(cdsMap.labels[, 2])
+
+# Save as RDS
+saveRDS(psid.data,     "psid_data.RDS")
+saveRDS(psid.labels,   "psid_labels.RDS")
+saveRDS(cdsMap.data,   "cdsMap_data.RDS")
+saveRDS(cdsMap.labels, "cdsMap_labels.RDS")
+
+# Create Yearly Data Frames -----------------------------------------------
+# Create Vectors for Variable Names by Year
+list68 <- c("ER30001",	"ER30002",	"ER31996",	"ER31997",	"ER32021",	
+            "ER32022",	"ER32024",	"ER32026",	"ER32028",	"ER32030",	
+            "ER32032")
+list97 <- c("ER10040",	"ER10041",	"ER10042",	"ER10043",	"ER10044",	
+            "ER10045",	"ER10046",	"ER10047",	"ER10048",	"ER10049",	
+            "ER10050",	"ER10051",	"ER10052",	"ER10053",	"ER10054",	
+            "ER10055",	"ER10056",	"ER10057",	"ER10058",	"ER10060",	
+            "ER12085",	"ER12086",	"ER12152",	"ER12154",	"ER33401",	
+            "ER33402",	"ER33403",	"CH97PRW",	"CH97HHW",	"PCGHHBW",	
+            "OCGCHBW",	"OCGHHBW",	"SUBSELW",	"Q1A19",	"Q1A33",	"Q1E12A",	
+            "Q1F12A",	"Q1G11C",	"Q1G21",	"Q1K3A",	"Q1K3B",	"Q1K7",	"Q1K8",	
+            "Q1K9",	"Q1K10",	"Q2A51",	"Q3LWPR",	"Q3PCPR",	"Q3BRPR",	
+            "Q3CALPR",	"Q3APPR",	"Q3BMPR")
+list01 <- c("ER33601", "ER33602",	"ER33603")
+list02 <- c("CH02PRW",	"Q21A19",	"Q21A20_2",	"Q21A23",	  "Q21A24_2",	"Q21B1",	
+            "Q21B2",	"Q21B11A1",	"Q21B12A1",	"Q21C7A_1",	"Q21C7A_2",	"Q21C7A_3",	
+            "Q21C7A_4",	"Q21C7B_1",	"Q21C7B_2",	"Q21C7B_3",	"Q21C7B_4",	"Q21C10H",	
+            "Q21C15A",	"Q21C15B",	"Q21C21A",	"Q21C21B",	"Q21C22H",	"Q21C27A",	
+            "Q21C27B",	"Q21C28H",	"Q21C33A",	"Q21C33B",	"Q21C39A",	"Q21C39B",	
+            "Q21G5D",	  "Q21G10C",	"Q21G21A1",	"Q21G21A2",	"Q21H5C",	"Q21H8B",	
+            "Q21H22B",	"Q21H22C",	"Q21H23A1",	"Q21H23B1",	"Q21H23C1",	"Q21H23D1",	
+            "Q21H23E1",	"Q21H23F1",	"Q21H23G1",	"Q21H23H1",	"Q21H24J",	"Q21H24O",	
+            "Q21H25J",	"Q21H25O",	"Q23L2",	   "Q23L2A",	"Q23L4A5",	"Q23L10",	
+            "Q23L10A",	"Q24LWPR",	"Q24PCPR",	"Q24BRPR",	"Q24APPR")
+list03 <- c("ER21049",	"ER21050",	"ER21051",	"ER21052",	"ER21053",	"ER21054",	
+            "ER21055",	"ER21056",	"ER21057",	"ER21058",	"ER21059",	"ER21060",	
+            "ER21061",	"ER21062",	"ER21063",	"ER21064",	"ER21065",	"ER21066",	
+            "ER21067",	"ER21068",	"ER21069",	"ER21070",	"ER21072",	"ER21145",	
+            "ER21146",	"ER22621",	"ER23311",	"ER23320",	"ER23703",	"ER23704",	
+            "S606",	"S620",	"ER33701",	"ER33702",	"ER33703")
+list07 <- c("ER36040",	"ER36041",	"ER36042",	"ER36043",	"ER36044",	"ER36045",	
+            "ER36046",	"ER36047",	"ER36048",	"ER36049",	"ER36050",	"ER36051",	
+            "ER36052",	"ER36053",	"ER36054",	"ER36055",	"ER36056",	"ER36057",	
+            "ER36058",	"ER36059",	"ER36060",	"ER36061",	"ER36062",	"ER36063",	
+            "ER36065",	"ER37620",	"ER37725",	"ER37726",	"ER37727",	"ER40458",	
+            "ER40536",	"ER40779",	"S806",	    "S820",	    "ER33901",	"ER33902",	
+            "ER33903",	"CH07PRW",	"CH07WT",	  "Q31B1",	  "Q31B2",	  "Q31B11A",	
+            "Q31B11A",	"Q31B12A",	"Q31B12A",	"Q31C15A",	"Q31C15B",	"Q31C21A",	
+            "Q31C21B",	"Q31C27A",	"Q31C27B",	"Q31C33A",	"Q31C33B",	"Q31C39A",	
+            "Q31C39B",	"Q31H5C",	  "Q31H8B",	  "Q31H22B",	"Q31H22C",	"Q31H23A",	
+            "Q31H23B",	"Q31H23C",	"Q31H23D",	"Q31H23E",	"Q31H23F",	"Q31H23G",	
+            "Q32JA34",	"Q33L2",	  "Q33L2A",	  "Q33L3F",	  "Q33L3G",	  "Q33L3H",		
+            "Q33L10",   "Q33L10A",	"Q34LWPR",	"Q34PCPR",	"Q34BRPR",	"Q34APPR")
+
+# Create Yearly Data Frames using Vectors
+psid.data.68 <- psid.data[, colnames(psid.data) %in% list68]
+psid.data.97 <- psid.data[, colnames(psid.data) %in% list97]
+psid.data.02 <- psid.data[, colnames(psid.data) %in% list02]
+psid.data.03 <- psid.data[, colnames(psid.data) %in% list03]
+psid.data.07 <- psid.data[, colnames(psid.data) %in% list07]
+
+# Map ID's Across Years via Map File
 

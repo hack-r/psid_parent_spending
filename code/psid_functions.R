@@ -8,8 +8,8 @@ setwd("data")
 # Load Libraries ----------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(AER, bestglm, caret, devtools, faraway, ggplot2, 
-               gridExtra, Matching, nnet, plyr, pls, psidR, rattle,
-               RDSTK, reshape, ROCR, RODBC, RRF, sqldf, xlsx)
+               gridExtra, Matching, plyr, pls, psidR, quantreg, rattle,
+               RDSTK, reshape, ROCR, RODBC, RRF, sqldf, xlsx, xtable)
 
 
 # HPC ---------------------------------------------------------------------
